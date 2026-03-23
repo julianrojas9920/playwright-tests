@@ -18,26 +18,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # ─── Checkout del código ───────────────────────────────────────────────
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
 
-      # ─── Setup Node.js ─────────────────────────────────────────────────────
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v4.4.0
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
 
-      # ─── Instalar dependencias ─────────────────────────────────────────────
       - name: Install dependencies
         run: npm ci
 
-      # ─── Instalar browsers de Playwright ──────────────────────────────────
       - name: Install Playwright browsers
         run: npx playwright install chromium --with-deps
 
-      # ─── Correr los tests ──────────────────────────────────────────────────
       - name: Run Playwright tests
         env:
           BASE_URL: ${{ secrets.BASE_URL }}
@@ -45,34 +40,28 @@ jobs:
           TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
         run: npx playwright test
 
-      # ─── Publicar reporte HTML como artifact ──────────────────────────────
       - name: Upload HTML report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.6.2
         if: always()
         with:
           name: playwright-report
           path: reports/html/
           retention-days: 15
 
-      # ─── Generar reporte Allure ────────────────────────────────────────────
       - name: Generate Allure report
         if: always()
         run: npx allure generate reports/allure-results --clean -o reports/allure-report
 
-      # ─── Preparar GitHub Pages ─────────────────────────────────────────────
       - name: Setup Pages
         if: always()
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v5
 
-      # ─── Subir reporte como artifact de Pages ─────────────────────────────
       - name: Upload Pages artifact
         if: always()
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v3.0.1
         with:
           path: reports/allure-report/
 
-  # ─── Job de deploy a GitHub Pages ─────────────────────────────────────────
-  # Va separado del job de test porque Pages lo requiere así
   deploy:
     needs: test
     runs-on: ubuntu-latest
@@ -89,4 +78,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v4.0.5

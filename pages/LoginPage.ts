@@ -3,8 +3,6 @@ import { BasePage } from './BasePage';
 
 export class LoginPage extends BasePage {
 
-  // ─── Locators ─────────────────────────────────────────────────────────────
-  // Definidos como readonly: se inicializan una vez y no cambian
   readonly usernameInput: Locator;
   readonly passwordInput: Locator;
   readonly submitButton:  Locator;
@@ -18,14 +16,10 @@ export class LoginPage extends BasePage {
     this.errorMessage  = page.locator('[data-test="error"]');
   }
 
-  // ─── Navegación ───────────────────────────────────────────────────────────
-
   async goto() {
     await super.goto('/');
     await this.waitForPageLoad();
   }
-
-  // ─── Acciones ─────────────────────────────────────────────────────────────
 
   async fillUsername(username: string) {
     await this.fill(this.usernameInput, username);
@@ -39,8 +33,6 @@ export class LoginPage extends BasePage {
     await this.click(this.submitButton);
   }
 
-  // ─── Flujo completo ───────────────────────────────────────────────────────
-  // Combina los pasos anteriores en un solo método reutilizable
   async login(username: string, password: string) {
     await this.fillUsername(username);
     await this.fillPassword(password);
@@ -51,8 +43,6 @@ export class LoginPage extends BasePage {
     await this.login(username, password);
     await this.waitForUrl('**/inventory.html');
   }
-
-  // ─── Validaciones de estado ───────────────────────────────────────────────
 
   async getErrorMessage(): Promise<string> {
     return this.getText(this.errorMessage);

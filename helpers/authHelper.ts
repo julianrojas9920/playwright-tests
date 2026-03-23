@@ -8,7 +8,6 @@ export class AuthHelper {
     this.page = page;
   }
 
-  // Login por UI (para tests que necesitan probar el flujo visual)
   async loginViaUI(email: string, password: string) {
     await this.page.goto('/login');
     await this.page.fill('[data-testid="email"]', email);
@@ -17,7 +16,6 @@ export class AuthHelper {
     await this.page.waitForURL('**/dashboard');
   }
 
-  // Login por API (más rápido, para tests que NO prueban el login)
   async loginViaAPI(request: ApiClient, email: string, password: string) {
     const { token } = await request.post('/api/auth/login', { email, password });
 
@@ -32,24 +30,8 @@ export class AuthHelper {
     await this.page.goto('/dashboard');
   }
 
-  // Cierra sesión y limpia el estado
   async logout() {
     await this.page.click('[data-testid="logout"]');
     await this.page.waitForURL('**/login');
   }
 }
-
-/*
-
----
-
-**El patrón que los conecta**
-
-En proyectos fintech el flujo típico es:
-
-authHelper.loginViaAPI()   ← rápido, para el 90% de tests
-       ↓
-   test UI corre
-       ↓
-apiClient.deleteUser()     ← limpia la DB después
-*/

@@ -7,8 +7,6 @@ export abstract class BasePage {
     this.page = page;
   }
 
-  // ─── Navegación ──────────────────────────────────────────────────────────
-
   async goto(path: string = '/') {
     await this.page.goto(path);
   }
@@ -24,8 +22,6 @@ export abstract class BasePage {
   async getCurrentUrl(): Promise<string> {
     return this.page.url();
   }
-
-  // ─── Acciones genéricas ───────────────────────────────────────────────────
 
   async click(locator: Locator) {
     await locator.waitFor({ state: 'visible' });
@@ -47,8 +43,6 @@ export abstract class BasePage {
     return locator.isVisible();
   }
 
-  // ─── Esperas ──────────────────────────────────────────────────────────────
-
   async waitForUrl(urlPattern: string | RegExp) {
     await this.page.waitForURL(urlPattern);
   }
@@ -56,8 +50,6 @@ export abstract class BasePage {
   async waitForSelector(locator: Locator) {
     await locator.waitFor({ state: 'visible' });
   }
-
-  // ─── Evidencia ────────────────────────────────────────────────────────────
 
   async takeScreenshot(name: string) {
     await this.page.screenshot({

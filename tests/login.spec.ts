@@ -3,8 +3,6 @@ import users from '../fixtures/users.json';
 
 test.describe('Login', () => {
 
-  // ─── Casos positivos ────────────────────────────────────────────────────
-
   test('usuario estándar puede iniciar sesión exitosamente', async ({ loginPage }) => {
     await loginPage.login(
       users.standard.username,
@@ -13,8 +11,6 @@ test.describe('Login', () => {
 
     await expect(loginPage.getPage()).toHaveURL(/inventory\.html/);
   });
-
-  // ─── Casos negativos ────────────────────────────────────────────────────
 
   test('usuario bloqueado ve mensaje de error al intentar ingresar', async ({ loginPage }) => {
     await loginPage.login(

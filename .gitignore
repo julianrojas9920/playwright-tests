@@ -2,7 +2,6 @@
 node_modules/
 
 # ─── Variables de entorno ─────────────────────────────────────────────────────
-# Nunca subir credenciales al repositorio
 .env
 .env.local
 
@@ -11,7 +10,6 @@ test-results/
 reports/
 
 # ─── Playwright ───────────────────────────────────────────────────────────────
-# Browsers descargados por Playwright (pesan varios GB)
 /playwright/.cache
 playwright-report/
 
