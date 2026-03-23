@@ -62,7 +62,9 @@ test.describe('Booking API', () => {
   test('GET /booking/:id retorna la reserva creada', async () => {
     const response = await client.getBookingById(bookingId);
 
+     await test.step('verificar status code 200', async () => {
     expect(response.status()).toBe(200);
+  });
 
     const body = await response.json();
     expect(body.firstname).toBe(bookings.valid.firstname);
