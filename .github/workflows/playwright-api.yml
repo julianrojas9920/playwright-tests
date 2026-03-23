@@ -2,14 +2,14 @@ name: API Tests
 
 on:
   push:
-    branches: [main, develop]
+    branches: [master]
     paths:
       - 'tests/api/**'
       - 'helpers/**'
       - 'fixtures/**'
       - 'playwright.config.ts'
   pull_request:
-    branches: [main, develop]
+    branches: [master]
     paths:
       - 'tests/api/**'
       - 'helpers/**'
