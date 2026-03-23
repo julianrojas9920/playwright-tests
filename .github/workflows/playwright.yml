@@ -2,11 +2,16 @@ name: Playwright Tests
 
 on:
   push:
-    branches: [main, develop]
+    branches: [master]
   pull_request:
-    branches: [main, develop]
-  schedule:
-    - cron: '0 12 * * 1-5'
+    branches: [master]
+  #schedule:
+    #- cron: '0 12 * * 1-5'  # Lunes a viernes a las 7am hora Colombia
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
   test:
@@ -38,11 +43,9 @@ jobs:
           BASE_URL: ${{ secrets.BASE_URL }}
           TEST_USER: ${{ secrets.TEST_USER }}
           TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
-          HEADLESS: 'true'
         run: npx playwright test
 
-      # ─── Publicar reporte HTML ─────────────────────────────────────────────
-      # Se sube siempre, incluso si los tests fallan
+      # ─── Publicar reporte HTML como artifact ──────────────────────────────
       - name: Upload HTML report
         uses: actions/upload-artifact@v4
         if: always()
@@ -51,11 +54,39 @@ jobs:
           path: reports/html/
           retention-days: 15
 
-      # ─── Publicar resultados Allure ────────────────────────────────────────
-      - name: Upload Allure results
-        uses: actions/upload-artifact@v4
+      # ─── Generar reporte Allure ────────────────────────────────────────────
+      - name: Generate Allure report
         if: always()
+        run: npx allure generate reports/allure-results --clean -o reports/allure-report
+
+      # ─── Preparar GitHub Pages ─────────────────────────────────────────────
+      - name: Setup Pages
+        if: always()
+        uses: actions/configure-pages@v4
+
+      # ─── Subir reporte como artifact de Pages ─────────────────────────────
+      - name: Upload Pages artifact
+        if: always()
+        uses: actions/upload-pages-artifact@v3
         with:
-          name: allure-results
-          path: reports/allure-results/
-          retention-days: 15
+          path: reports/allure-report/
+
+  # ─── Job de deploy a GitHub Pages ─────────────────────────────────────────
+  # Va separado del job de test porque Pages lo requiere así
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: always()
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
