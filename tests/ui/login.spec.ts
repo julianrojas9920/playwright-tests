@@ -1,5 +1,5 @@
-import { test, expect } from '../fixtures';
-import users from '../fixtures/users.json';
+import { test, expect } from '../../fixtures';
+import users from '../../fixtures/users.json';
 
 test.describe('Login', () => {
 
