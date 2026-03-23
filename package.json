@@ -1,0 +1,14 @@
+{
+  "devDependencies": {
+    "@playwright/test": "^1.58.2",
+    "@types/node": "^25.5.0",
+    "allure-commandline": "^2.38.1",
+    "allure-playwright": "^3.6.0",
+    "dotenv": "^17.3.1"
+  },
+  "scripts": {
+    "test": "npx playwright test",
+    "report:allure": "npx allure generate reports/allure-results --clean -o reports/allure-report && npx allure open reports/allure-report",
+    "report:html": "npx playwright show-report reports/html"
+  }
+}

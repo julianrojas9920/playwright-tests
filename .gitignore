@@ -1,0 +1,33 @@
+# ─── Dependencias ────────────────────────────────────────────────────────────
+node_modules/
+
+# ─── Variables de entorno ─────────────────────────────────────────────────────
+# Nunca subir credenciales al repositorio
+.env
+.env.local
+
+# ─── Resultados de tests ──────────────────────────────────────────────────────
+test-results/
+reports/
+
+# ─── Playwright ───────────────────────────────────────────────────────────────
+# Browsers descargados por Playwright (pesan varios GB)
+/playwright/.cache
+playwright-report/
+
+# ─── TypeScript ───────────────────────────────────────────────────────────────
+dist/
+*.js.map
+
+# ─── Sistema operativo ────────────────────────────────────────────────────────
+.DS_Store         # Mac
+Thumbs.db         # Windows
+desktop.ini       # Windows
+
+# ─── Editores ─────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
